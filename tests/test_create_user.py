@@ -1,6 +1,6 @@
 import pytest
 import allure
-from test_data import missing_user_fields
+from test_data import MISSING_USER_FIELDS, ERROR_MSG_MISSING_USER_FIELDS
 
 
 class TestCreateUser:
@@ -24,7 +24,7 @@ class TestCreateUser:
 
     @allure.title("Создание пользователя без обязательных полей")
     @allure.description("Проверка ошибки при создании пользователя с пропуском одного из обязательных полей.")
-    @pytest.mark.parametrize("missing_field", missing_user_fields)
+    @pytest.mark.parametrize("missing_field", MISSING_USER_FIELDS)
     def test_create_user_with_missing_fields(self, api_client, missing_field, base_url):
         user_data = {"email": "test-unique@yandex.ru", "password": "password", "name": "TestUser"}
         user_data.pop(missing_field)
@@ -34,4 +34,4 @@ class TestCreateUser:
 
         with allure.step("Проверка ошибки 403"):
             assert response.status_code == 403
-            assert response.json()['message'] == "Email, password and name are required fields"
+            assert response.json()['message'] == ERROR_MSG_MISSING_USER_FIELDS

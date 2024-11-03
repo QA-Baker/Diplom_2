@@ -1,13 +1,13 @@
 import pytest
 import allure
-from test_data import valid_ingredients
+from test_data import VALID_INGREDIENTS, ERROR_MSG_AUTH_REQUIRED
 
 
 class TestGetUserOrders:
 
     @allure.title("Получение заказов с авторизацией")
     @allure.description("Проверка успешного получения заказов авторизованного пользователя.")
-    @pytest.mark.parametrize("ingredients", [valid_ingredients])
+    @pytest.mark.parametrize("ingredients", [VALID_INGREDIENTS])
     def test_get_orders_with_auth(self, create_and_delete_user, base_url, ingredients, api_client):
         user_data, user_token, api_client = create_and_delete_user
         with allure.step("Установка заголовка авторизации"):
@@ -37,4 +37,4 @@ class TestGetUserOrders:
 
         with allure.step("Проверка ошибки 401"):
             assert response.status_code == 401
-            assert response.json()['message'] == "You should be authorised"
+            assert response.json()['message'] == ERROR_MSG_AUTH_REQUIRED

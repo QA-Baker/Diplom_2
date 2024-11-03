@@ -1,6 +1,6 @@
 import pytest
 import allure
-from test_data import invalid_login_data
+from test_data import INVALID_LOGIN_DATA, ERROR_MSG_INVALID_LOGIN
 
 
 class TestLoginUser:
@@ -20,11 +20,11 @@ class TestLoginUser:
 
     @allure.title("Авторизация с неверными данными")
     @allure.description("Проверка ошибки при попытке авторизоваться с неверными логином или паролем.")
-    @pytest.mark.parametrize("login_data", invalid_login_data)
+    @pytest.mark.parametrize("login_data", INVALID_LOGIN_DATA)
     def test_login_with_invalid_data(self, api_client, login_data, base_url):
         with allure.step("Отправка запроса на авторизацию с неверными данными"):
             response = api_client.post(f"{base_url}/auth/login", json=login_data)
 
         with allure.step("Проверка ошибки 401"):
             assert response.status_code == 401
-            assert response.json()['message'] == "email or password are incorrect"
+            assert response.json()['message'] == ERROR_MSG_INVALID_LOGIN

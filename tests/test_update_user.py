@@ -1,5 +1,7 @@
 import allure
 
+from test_data import ERROR_MSG_EMAIL_ALREADY_EXISTS, ERROR_MSG_AUTH_REQUIRED
+
 
 class TestUpdateUser:
 
@@ -51,7 +53,7 @@ class TestUpdateUser:
 
         with allure.step("Проверка ошибки 403"):
             assert response.status_code == 403
-            assert response.json()['message'] == "User with such email already exists"
+            assert response.json()['message'] == ERROR_MSG_EMAIL_ALREADY_EXISTS
 
     @allure.title("Изменение email без авторизации")
     @allure.description("Проверка ошибки при попытке изменить email без авторизации.")
@@ -66,7 +68,7 @@ class TestUpdateUser:
 
         with allure.step("Проверка ошибки 401"):
             assert response.status_code == 401
-            assert response.json()['message'] == "You should be authorised"
+            assert response.json()['message'] == ERROR_MSG_AUTH_REQUIRED
 
     @allure.title("Изменение имени без авторизации")
     @allure.description("Проверка ошибки при попытке изменить имя без авторизации.")
@@ -81,4 +83,4 @@ class TestUpdateUser:
 
         with allure.step("Проверка ошибки 401"):
             assert response.status_code == 401
-            assert response.json()['message'] == "You should be authorised"
+            assert response.json()['message'] == ERROR_MSG_AUTH_REQUIRED
